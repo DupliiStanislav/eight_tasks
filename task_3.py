@@ -25,7 +25,7 @@ class Triangle:
 
     @property
     def get_square(self):
-        # get square for our triangle
+        # get square for our triangle.
         p = (self.side1 + self.side2 + self.side3) / 2
         s = math.sqrt(p * (p - self.side1) * (p - self.side2) * (p - self.side3))
         return s
