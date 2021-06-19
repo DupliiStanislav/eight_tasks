@@ -51,9 +51,8 @@ def validation(args):
 
 
 def main():
-    """
-    main function to implement all of the logic
-    """
+
+    # main function to implement all of the logic
     triangles_dct = {}
 
     while True:
