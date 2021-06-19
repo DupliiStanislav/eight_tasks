@@ -35,9 +35,9 @@ def is_valid(value):
     """Validation functions to check if args exist, positive and integers"""
     val = int(value)
     if val < 0:
-        print('In this program we can create a chess board \n \
-to do this u should use positive numbers as integers')
-        raise ValueError
+        print('In this program we can create a chess board '
+              'to do this u should use positive numbers as integers')
+        raise argparse.ArgumentError
     return val
 
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         args = parser.parse_args()
         chessboard = Chessboard(args.rows, args.cols)
         chessboard.show_board()
-    except ValueError:
+    except argparse.ArgumentError:
         exc = sys.exc_info()[1]
         print(f'Use positive integer numbers, instead of: {exc}')
 
