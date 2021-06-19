@@ -53,8 +53,8 @@ class FileHandler:
 
     def ask_save_new_data(self, file):
         # save changes if we want to
-        what = input('If you want to save changes in your file print'
-                     '"yes"\nor any key to start again')
+        what = input('If you want to save changes in your file print '
+                     '"yes"\nor any key to start again: ')
         if what.lower() == 'yes':
             file.save_data(self.change_string())
 
