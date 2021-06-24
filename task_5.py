@@ -45,13 +45,14 @@ NUMBERS = {
 THOUSANDS = ('тысяча', 'тысячи', 'тысяч')
 
 # store cases for millions name
-MILLIONS = ('миллион ', 'миллиона ', 'миллионов ')
+MILLIONS = ('миллион', 'миллиона', 'миллионов')
 
 
 class NumToString:
     """
     Create a class NumToString
     """
+
     def __init__(self, num):
         self.num = num
 
@@ -59,71 +60,70 @@ class NumToString:
     @staticmethod
     def get_name(num, case=None):
 
-        name = ''
         val = num
         div = 1000
+        string_lst = []
 
         while val:
             cur = int(val - (val % div))
-
             if cur <= 0:
                 div /= 10
                 cur = int(val - (val % div))
                 if case == 'thousand':
                     if cur > 0 and val > 19:
-                        name += ''.join(NUMBERS[cur][1] + ' ' if cur <= 2 else NUMBERS[cur] + ' ')
+                        string_lst.append(NUMBERS[cur][1] if cur <= 2 else NUMBERS[cur])
                     elif cur > 0 and val < 20:
-                        name += ''.join(NUMBERS[val][1] + ' ' if cur <= 2 else NUMBERS[val] + ' ')
+                        string_lst.append(NUMBERS[val][1] if cur <= 2 else NUMBERS[val])
                         break
                 else:
                     if cur > 0 and val > 19:
-                        name += ''.join(NUMBERS[cur][0] + ' ' if cur <= 2 else NUMBERS[cur] + ' ')
+                        string_lst.append(NUMBERS[cur][0] if cur <= 2 else NUMBERS[cur])
                     elif cur > 0 and val < 20:
-                        name += ''.join(NUMBERS[val][0] + ' ' if cur <= 2 else NUMBERS[val] + ' ')
+                        string_lst.append(NUMBERS[val][0] if cur <= 2 else NUMBERS[val])
                         break
             else:
-                name += NUMBERS[cur] + ' '
+                string_lst.append(NUMBERS[cur])
 
             val = int(val % div)
 
-        return name
+        return ' '.join(string_lst)
 
     # method to get proper name for millions and thousands
     @property
     def get_proper_name(self):
 
         val = abs(self.num)
-        thousands = int(val // 1000)
-        millions = int(val // 1000000)
+        thousands = str(int(val // 1000))
+        millions = str(int(val // 1000000))
 
-        if str(thousands)[-1] == '1':
+        if thousands[-1] == '1':
             name_t = THOUSANDS[0]
-        elif str(thousands)[-2:] not in ['12', '13', '14'] and str(thousands)[-1] in '234':
+        elif thousands[-2:] not in ['12', '13', '14'] and thousands[-1] in '234':
             name_t = THOUSANDS[1]
         else:
             name_t = THOUSANDS[2]
 
-        if millions > 0:
+        if int(millions) > 0:
 
-            thousands = int(val % 1000000 // 1000)
+            thousands = str(int(val % 1000000 // 1000))
 
-            if str(millions)[-1] == '1':
+            if millions[-1] == '1':
                 name_m = MILLIONS[0]
-            elif str(millions)[-2:] not in ['12', '13', '14'] and str(millions)[-1] in '234':
+            elif millions[-2:] not in ['12', '13', '14'] and millions[-1] in '234':
                 name_m = MILLIONS[1]
             else:
                 name_m = MILLIONS[2]
 
-            return (name_t if thousands > 0 else ''), name_m
-        return name_t if thousands > 0 else ''
+            return (name_t if int(thousands) > 0 else ''), name_m
+        return name_t if int(thousands) > 0 else ''
 
     # final method to stick all of the stings to create the name of a number
     def get_string(self):
-        name = ''
         val = abs(self.num)
+        string_lst = []
 
         if self.num < 0:
-            name += 'минус '
+            string_lst.append('минус')
 
         if val < 1000000:
             thousands = int(val // 1000)
@@ -132,27 +132,27 @@ class NumToString:
             millions = int(val // 1000000)
             thousands = int(val % 1000000 // 1000)
             numbers = int(val % 1000000 % 1000)
-            name += self.get_name(millions) + self.get_proper_name[1] + \
-                    self.get_name(thousands, 'thousand') + self.get_proper_name[0] + \
-                    ' ' + self.get_name(numbers)
 
-            return name
+            string_lst.extend([self.get_name(millions), self.get_proper_name[1],
+                               self.get_name(thousands, 'thousand', ), self.get_proper_name[0], self.get_name(numbers)])
+
+            return ' '.join(string_lst)
 
         if val == 0:
             return 'Ноль'
         elif thousands > 0:
-            name += self.get_name(thousands, 'thousand') + self.get_proper_name \
-                    + ' ' + self.get_name(numbers)
+            string_lst.extend([self.get_name(thousands, 'thousand'), self.get_proper_name, self.get_name(numbers)])
         else:
-            name += self.get_name(numbers)
+            string_lst.append(self.get_name(numbers))
 
-        return name
+        return ' '.join(string_lst)
 
 
 class GUI:
     """
     Create class GUI to initialize interface representation
     """
+
     def __init__(self, root):
         self.root = root
         self.inputs = tk.Entry(self.root, width=30, justify='center', font=20, bd=5)

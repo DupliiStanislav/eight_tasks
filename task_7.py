@@ -10,7 +10,7 @@ class NaturalNumbersRow:
         self.upper_range = upper_range
 
     # change str method to print properly our row of numbers
-    def __str__(self):
+    def __repr__(self):
         return ', '.join(str(i) for i in self.required_nums)
 
     # generator to get our nums one by one

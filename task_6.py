@@ -1,16 +1,18 @@
-import task_4
+from task_4 import File, FILE_PATH_MSG, ERROR_FIND_MSG
 
 
-class LuckyTickets(task_4.File):
+class LuckyTickets:
 
     """
     create class and inherit from the class File
     from task_4 which has get_data and save_data methods
     and attribute self.path for path to file
     """
-
+    def __init__(self, path):
+        self.file = File(path)
     # method returns count of all exist tickets and
     # a list with these tickets
+
     @property
     def get_moscow_lucky_tickets(self):
         counter = 0
@@ -40,27 +42,22 @@ class LuckyTickets(task_4.File):
 if __name__ == '__main__':
     while True:
         try:
-            path = input(task_4.FILE_PATH_MSG)
+            path = input(FILE_PATH_MSG)
             lt = LuckyTickets(path)
-            what = lt.get_data.lower()
+            what = lt.file.get_data.lower()
             if what.strip() == 'moscow':
                 print(f'There are exist {lt.get_moscow_lucky_tickets[0]} '
                       f'Moscow lucky tickets')
-                data = ''
-                for e, i in enumerate(lt.get_moscow_lucky_tickets[1]):
-                    data += i + ' ' if e % 5 != 0 else '\n' + i + ' '
-                LuckyTickets(r'C:\Users\User\Desktop\TASKS\ticketslist.txt').save_data(data)
+                data = ' '.join([i if e % 5 != 0 else f'\n{i}'
+                                 for e, i in enumerate(lt.get_moscow_lucky_tickets[1])])
+                LuckyTickets(r'C:\Users\User\Desktop\TASKS\ticketslist.txt').file.save_data(data)
             elif what.strip() == 'piter':
                 print(f'There are exist {lt.get_piter_lucky_tickets[0]} '
                       f'Piter lucky tickets')
-                data = ''
-                for e, i in enumerate(lt.get_piter_lucky_tickets[1]):
-                    data += i + ' ' if e % 5 != 0 else '\n' + i + ' '
-                LuckyTickets(r'C:\Users\User\Desktop\TASKS\ticketslist.txt').save_data(data)
-        except FileNotFoundError:
-            print(task_4.ERROR_FIND_MSG)
-            continue
-        except PermissionError:
-            print(task_4.ERROR_FIND_MSG)
+                data = ' '.join([i if e % 5 != 0 else f'\n{i}'
+                                 for e, i in enumerate(lt.get_piter_lucky_tickets[1])])
+                LuckyTickets(r'C:\Users\User\Desktop\TASKS\ticketslist.txt').file.save_data(data)
+        except (FileNotFoundError, PermissionError):
+            print(ERROR_FIND_MSG)
             continue
 

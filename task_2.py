@@ -21,8 +21,8 @@ class Envelope:
 		"""
 		Change method __str__ to represent good print
 		"""
-		return f'Envelope with length: {self.length} \
-and width: {self.width}'
+		return f'Envelope with length: {self.length} ' \
+			   f'and width: {self.width}'
 
 
 def is_positive_valid(*args):

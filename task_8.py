@@ -9,6 +9,9 @@ class FibonacciInRange:
     def __init__(self, low, high):
         self.low = low
         self.high = high
+        if self.low > self.high:
+            print('Upper range lower then lower range')
+            sys.exit()
 
     # generator that yield a number in defined range
     @property
@@ -19,19 +22,19 @@ class FibonacciInRange:
             x, y = y, x + y
 
     # change str method to show a row of numbers separated by commas
-    def __str__(self):
+    def __repr__(self):
         return ', '.join(str(i) for i in self.fib_nums
                          if i in range(self.low, self.high))
 
 
 # Validation functions to check if args exist, positive and integers
-def is_valid(value):
-    val = int(value)
-    if val <= 0:
+def is_valid(num1):
+    val1 = int(num1)
+    if val1 <= 0:
         print('In this program we can output the fibonacci row with specific requirements'
               'to do this u should use positive numbers as integers')
         raise argparse.ArgumentError
-    return val
+    return val1
 
 
 if __name__ == '__main__':

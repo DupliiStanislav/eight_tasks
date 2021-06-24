@@ -45,11 +45,7 @@ class FileHandler:
         return self.data.count(self.string)
 
     def change_string(self):
-        # change one substring to other in file data
-        new_data = ''
-        for line in self.data:
-            new_data += line.replace(self.string, self.change)
-        return new_data
+        return ''.join(line.replace(self.string, self.change) for line in self.data)
 
     def ask_save_new_data(self, file):
         # save changes if we want to
