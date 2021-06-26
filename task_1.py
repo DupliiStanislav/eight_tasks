@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+INSTRUCTIONS = "In this program we can create a chess board " \
+               "to do this u should use positive numbers as integers"
 
 class Chessboard:
 
@@ -26,30 +28,32 @@ class Chessboard:
 
         for e, row in enumerate(self.create_board()):
             if e % 2 == 0:
-                print(' ' + ''.join([f'{el:^3}' for el in row]))
+                print(''.join([f' {el}' for el in row]))
             else:
-                print(''.join([f'{el:^3}' for el in row]))
+                print(' '.join([f'{el}' for el in row]))
 
 
 def is_valid(value):
     """Validation functions to check if args exist, positive and integers"""
     val = int(value)
     if val < 0:
-        print('In this program we can create a chess board '
-              'to do this u should use positive numbers as integers')
+        print(INSTRUCTIONS)
         raise argparse.ArgumentError
     return val
 
 
 if __name__ == '__main__':
     try:
-        parser = argparse.ArgumentParser(description='Create chess board with two arguments rows and cols', exit_on_error=False)
+        parser = argparse.ArgumentParser(description='Create chess board with two arguments rows and cols')
         parser.add_argument('rows', type=is_valid, help='Rows number')
         parser.add_argument('cols', type=is_valid, help='Cols number')
         args = parser.parse_args()
         chessboard = Chessboard(args.rows, args.cols)
         chessboard.show_board()
+        print(chessboard)
     except argparse.ArgumentError:
         exc = sys.exc_info()[1]
         print(f'Use positive integer numbers, instead of: {exc}')
+    except SystemExit:
+        print(INSTRUCTIONS)
 
