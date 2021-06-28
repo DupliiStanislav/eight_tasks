@@ -4,10 +4,9 @@ import sys
 INSTRUCTIONS = "In this program we can create a chess board " \
                "to do this u should use positive numbers as integers"
 
+
 class Chessboard:
-
     """Create a class to init our Chessboard"""
-
     def __init__(self, rows=None, cols=None):
         self.rows = rows
         self.cols = cols
@@ -50,7 +49,6 @@ if __name__ == '__main__':
         args = parser.parse_args()
         chessboard = Chessboard(args.rows, args.cols)
         chessboard.show_board()
-        print(chessboard)
     except argparse.ArgumentError:
         exc = sys.exc_info()[1]
         print(f'Use positive integer numbers, instead of: {exc}')
