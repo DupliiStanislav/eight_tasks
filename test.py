@@ -1,13 +1,19 @@
 import unittest
+import unittest
+from mock import patch, mock_open
+
+from task_1 import Chessboard
+from task_2 import Envelope
+from task_3 import Triangle
+from task_4 import File, FileHandler
 
 
 class TestChessboard(unittest.TestCase):
     """
-    Create test class for Chessboard
+    tests for task_1
     """
     # Setup instance and args
     def setUp(self) -> None:
-        from task_1 import Chessboard
         self.chessboard = Chessboard(3, 3)
 
     # test number of args
@@ -31,9 +37,10 @@ class TestChessboard(unittest.TestCase):
 
 
 class TestEnvelope(unittest.TestCase):
-
+    """
+    tests for task_2
+    """
     def setUp(self) -> None:
-        from task_2 import Envelope
         self.env1 = Envelope(3, 3)
         self.env2 = Envelope(6, 7)
 
@@ -49,6 +56,7 @@ class TestEnvelope(unittest.TestCase):
         self.assertIsInstance(self.env2.width, int)
         self.assertIsInstance(self.env2.length, int)
 
+    # check if we can properly compare two envelopes
     def test_comparison(self):
         self.assertGreater(self.env2.width, self.env1.width)
         self.assertGreater(self.env2.length, self.env1.length)
@@ -57,6 +65,97 @@ class TestEnvelope(unittest.TestCase):
 
         check = self.env1 - self.env2
         self.assertEqual(check, f'We can put {self.env1} into {self.env2}')
+
+
+# Test for task_3
+class TestTriangle(unittest.TestCase):
+    """
+    tests for task_3
+    """
+    def setUp(self) -> None:
+
+        self.tr1 = Triangle('one', 3, 4, 5)
+        self.tr2 = Triangle('two', 22, 23, 20)
+        self.tr3 = Triangle('three', 10, 9, 12)
+
+    # check if we can make such triangle
+    def test_is_exist(self):
+        for tr in (self.tr1, self.tr2, self.tr3):
+            self.assertGreater((tr.side1 + tr.side2), tr.side3)
+            self.assertGreater((tr.side1 + tr.side2), tr.side3)
+            self.assertGreater((tr.side1 + tr.side2), tr.side3)
+            self.assertGreater((tr.side1 + tr.side3), tr.side2)
+            self.assertGreater((tr.side1 + tr.side3), tr.side2)
+            self.assertGreater((tr.side1 + tr.side3), tr.side2)
+            self.assertGreater((tr.side2 + tr.side3), tr.side1)
+            self.assertGreater((tr.side2 + tr.side3), tr.side1)
+            self.assertGreater((tr.side2 + tr.side3), tr.side1)
+
+    # check that we get proper square size
+    def test_get_square(self):
+        self.assertEqual(6, self.tr1.get_square)
+        self.assertEqual(float(201.30434048971722), self.tr2.get_square)
+        self.assertEqual(float(44.039045175843675), self.tr3.get_square)
+
+    # check that add to dict works properly
+    def test_in_dict(self):
+        triangles_dct = {self.tr1.name: self.tr1.get_square}
+        self.assertIn(self.tr1.get_square, triangles_dct.values())
+        self.assertIn(self.tr1.name, triangles_dct)
+
+
+class TestFileData(unittest.TestCase):
+    """
+    tests for task_4
+    """
+    # test if we can save data
+    def test_save_data(self):
+        m = mock_open()
+        with patch('builtins.open',  m, create=True) as f:
+            file = File('test.txt')
+            file.save_data('next text')
+            f.assert_called_with('test.txt', 'w', encoding='UTF-8')
+            handle = f()
+            handle.write.assert_called_with('next text')
+
+    # test if method read data
+    def test_get_data(self):
+        with patch('builtins.open', mock_open(read_data='text')) as f:
+            file = File('test.txt')
+            result = file.get_data
+            assert result == 'text'
+
+    # test method for count substrings
+    def test_counter_for_string(self):
+        with patch('builtins.open', mock_open(read_data='text')) as f:
+            file = File('test.txt')
+            result = file.get_data
+            fh = FileHandler(result, 'text')
+            res = fh.counter_for_string()
+            self.assertEqual(1, res)
+            self.assertNotEqual(0, res)
+
+    # test method to change substrings
+    def test_change_string(self):
+        with patch('builtins.open', mock_open(read_data='text'), create=True) as f:
+            file = File('test.txt')
+            fh = FileHandler(file.get_data, 't', 'n')
+            res = fh.change_string()
+            assert res == 'nexn'
+
+    # test if we ask for save we get read and save our data
+    def test_ask_for_save_data(self):
+        with patch('builtins.open', mock_open(read_data='text')) as f:
+            file = File('test.txt')
+            fh = FileHandler(file.get_data, 't', 'n')
+            res = fh.change_string()
+            assert res == 'nexn'
+            with patch('builtins.open', mock_open(), create=True) as w:
+                file.save_data(res)
+                w.assert_called_with('test.txt', 'w', encoding='UTF-8')
+                handle = w()
+                handle.write.assert_called_with('nexn')
+                print(w.mock_calls)
 
 
 if __name__ == '__main__':
