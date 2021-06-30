@@ -1,11 +1,12 @@
 import unittest
 import unittest
-from mock import patch, mock_open
+from mock import patch, mock_open, MagicMock
 
 from task_1 import Chessboard
 from task_2 import Envelope
 from task_3 import Triangle
-from task_4 import File, FileHandler
+from task_4 import File, FileHandler, FILE_PATH_MSG
+from task_5 import NumToString
 
 
 class TestChessboard(unittest.TestCase):
@@ -108,6 +109,7 @@ class TestFileData(unittest.TestCase):
     """
     tests for task_4
     """
+
     # test if we can save data
     def test_save_data(self):
         m = mock_open()
@@ -144,14 +146,16 @@ class TestFileData(unittest.TestCase):
             assert res == 'nexn'
 
     # test if we ask for save we get read and save our data
-    def test_ask_for_save_data(self):
+    @patch('builtins.input', return_value='yes')
+    def test_ask_for_save_data(self, mock_input):
         with patch('builtins.open', mock_open(read_data='text')) as f:
             file = File('test.txt')
             fh = FileHandler(file.get_data, 't', 'n')
             res = fh.change_string()
             assert res == 'nexn'
             with patch('builtins.open', mock_open(), create=True) as w:
-                file.save_data(res)
+                fh.ask_save_new_data(file)
+                assert input() == 'yes'
                 w.assert_called_with('test.txt', 'w', encoding='UTF-8')
                 handle = w()
                 handle.write.assert_called_with('nexn')
