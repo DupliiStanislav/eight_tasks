@@ -64,10 +64,10 @@ class NumToString:
         string_lst = []
 
         while val:
-            cur = int(val - (val % div))
+            cur = val - (val % div)
             if cur <= 0:
                 div /= 10
-                cur = int(val - (val % div))
+                cur = val - (val % div)
                 if case == 'thousand':
                     if cur > 0 and val > 19:
                         string_lst.append(NUMBERS[cur][1] if cur <= 2 else NUMBERS[cur])
@@ -83,7 +83,7 @@ class NumToString:
             else:
                 string_lst.append(NUMBERS[cur])
 
-            val = int(val % div)
+            val = val % div
 
         return ' '.join(string_lst)
 
