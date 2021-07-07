@@ -1,4 +1,5 @@
 from task_4 import File, FILE_PATH_MSG, ERROR_FIND_MSG
+import sys
 
 
 class LuckyTickets:
@@ -10,9 +11,9 @@ class LuckyTickets:
     """
     def __init__(self, path):
         self.file = File(path)
+
     # method returns count of all exist tickets and
     # a list with these tickets
-
     @property
     def get_moscow_lucky_tickets(self):
         counter = 0
@@ -42,7 +43,9 @@ class LuckyTickets:
 if __name__ == '__main__':
     while True:
         try:
-            path = input(FILE_PATH_MSG)
+            path = input(FILE_PATH_MSG + '\nor "no" if you want to finish:')
+            if path.strip() == 'no':
+                sys.exit()
             lt = LuckyTickets(path)
             what = lt.file.get_data.lower()
             if what.strip() == 'moscow':
@@ -57,6 +60,7 @@ if __name__ == '__main__':
                 data = ' '.join([i if e % 5 != 0 else f'\n{i}'
                                  for e, i in enumerate(lt.get_piter_lucky_tickets[1])])
                 LuckyTickets(r'C:\Users\User\Desktop\TASKS\ticketslist.txt').file.save_data(data)
+
         except (FileNotFoundError, PermissionError):
             print(ERROR_FIND_MSG)
             continue

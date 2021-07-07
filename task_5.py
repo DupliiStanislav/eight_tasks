@@ -58,10 +58,9 @@ class NumToString:
 
     # method to return string name of a number
     @staticmethod
-    def get_name(num, case=None):
+    def get_name(val, case=None):
 
-        val = num
-        div = 1000
+        div = 100
         string_lst = []
 
         while val:
@@ -134,7 +133,7 @@ class NumToString:
             numbers = int(val % 1000000 % 1000)
 
             string_lst.extend([self.get_name(millions), self.get_proper_name[1],
-                               self.get_name(thousands, 'thousand', ), self.get_proper_name[0], self.get_name(numbers)])
+                               self.get_name(thousands, 'thousand'), self.get_proper_name[0], self.get_name(numbers)])
 
             return ' '.join(string_lst)
 

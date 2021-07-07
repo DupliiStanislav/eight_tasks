@@ -51,7 +51,7 @@ class TestFileData(unittest.TestCase):
             assert res == 'nexn'
             with patch('builtins.open', mock_open(), create=True) as w:
                 fh.ask_save_new_data(file)
-                assert input() == 'yes'
+                assert mock_input() == 'yes'
                 w.assert_called_with('test.txt', 'w', encoding='UTF-8')
                 handle = w()
                 handle.write.assert_called_with('nexn')
